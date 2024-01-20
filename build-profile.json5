@@ -1,0 +1,41 @@
+{
+  "app": {
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "C:\\Users\\19802\\.ohos\\config\\auto_debug_OHPLC_com.example.ohplc_2850086000521706319.cer",
+          "storePassword": "0000001B3174192F2EAE5108E47D70977C208348BD047BDD1C166018FB906368CAACAB466AB643A5050677",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001BBFBF1666559B6B5B4D42B7443CC8385E12EC2123C2FDA2494262DB236F4F76D43F62E9E5736CC3",
+          "profile": "C:\\Users\\19802\\.ohos\\config\\auto_debug_OHPLC_com.example.ohplc_2850086000521706319.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "C:\\Users\\19802\\.ohos\\config\\auto_debug_OHPLC_com.example.ohplc_2850086000521706319.p12"
+        }
+      }
+    ],
+    "compileSdkVersion": 9,
+    "compatibleSdkVersion": 9,
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    }
+  ]
+}
