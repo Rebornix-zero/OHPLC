@@ -1,10 +1,9 @@
 import UIAbility from '@ohos.app.ability.UIAbility';
 import hilog from '@ohos.hilog';
 import window from '@ohos.window';
-
+import {createUserTable,addUser,User} from '../utils/UserDB'
 
 export default class EntryAbility extends UIAbility {
-
   onCreate(want, launchParam) {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
   }
@@ -14,7 +13,19 @@ export default class EntryAbility extends UIAbility {
   }
 
   onWindowStageCreate(windowStage: window.WindowStage) {
-    // Main window is created, set main page for this ability
+    //创建或启动数据库
+    let result= createUserTable(this.context);
+    result.then((isSuccess)=>{
+      if(isSuccess){
+        console.log("UserDB start successfully!");
+        addUser(this.context,new User(0,"accc","pass",0,"WHC","123@qerq.caw"))
+        addUser(this.context,new User(0,"assadcc","padadawass",0,"WasssHC","123@qerq.caw"))
+        addUser(this.context,new User(0,"asssssssadcc","padadawass",0,"WassssssssssHC","123@qerq.caw"))
+      }else{
+        console.log("UserDB start failed!");
+      }
+    })
+    // 创建好窗口，并加载入口页面
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
     windowStage.loadContent('pages/LoginPage', (err, data) => {
       if (err.code) {
