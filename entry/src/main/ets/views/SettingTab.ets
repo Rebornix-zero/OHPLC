@@ -1,6 +1,7 @@
 import ItemDataExample from '../common/data/Data'
-import {SettingItem} from '../common/type/ItemTypes'
+import { SettingItem } from '../common/type/ItemTypes'
 import router from '@ohos.router'
+import promptAction from '@ohos.promptAction';
 
 @Component
 export default struct SettingTab {
@@ -9,9 +10,23 @@ export default struct SettingTab {
   @State email: string = router.getParams()["email"];
   @State name: string = router.getParams()["name"];
 
-  exitLogin():void{
-    router.replaceUrl({ url: "pages/LoginPage"});
-}
+  exitLogin(): void {
+    promptAction.showDialog({
+      title: "确定退出登录吗？",
+      buttons: [{
+        text: '退出',
+        color: 'red',
+      }, {
+        text: '取消',
+        color: '#007DFF',
+      }]
+    })
+      .then((data) => {
+        if (data.index == 0) {
+          router.replaceUrl({ url: "pages/LoginPage" });
+        }
+      })
+  }
 
   @Builder settingCell(item: SettingItem) {
     Row() {
@@ -88,8 +103,8 @@ export default struct SettingTab {
         .fontColor(Color.Red)
         .backgroundColor(Color.White)
         .width("60%")
-        .margin({top:"30%"})
-        .onClick(()=>this.exitLogin())
+        .margin({ top: "30%" })
+        .onClick(() => this.exitLogin())
     }
     .size({ width: "100%", height: "100%" })
   }
