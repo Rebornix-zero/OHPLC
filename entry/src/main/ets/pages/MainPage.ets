@@ -9,11 +9,10 @@ import common from '@ohos.app.ability.common';
 struct MainPage {
   @State currentIndex: number = 0;
   private tabsController: TabsController = new TabsController();
+  private uiAbilityContext:common.UIAbilityContext=getContext() as common.UIAbilityContext;
 
   exit() {
-    let ctx = getContext();
-    let a: common.UIAbilityContext = ctx as common.UIAbilityContext;
-    a.terminateSelf();
+    this.uiAbilityContext.terminateSelf();
   }
 
   onBackPress() {
@@ -83,6 +82,6 @@ struct MainPage {
     .onChange((index: number) => {
       this.currentIndex = index;
     })
-    .backgroundColor("#DEDEDE")
+    .backgroundColor("#4687ceff")
   }
 }

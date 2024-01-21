@@ -78,7 +78,7 @@ export default struct MultiControlTab {
   build() {
     Column() {
       Text("多端协同")
-        .margin({ top: "8%" })
+        .margin({ top: "6%" })
         .fontWeight("bolder")
         .fontSize("24pv")
       List() {
@@ -96,7 +96,7 @@ export default struct MultiControlTab {
       .width("100%")
       .height("88%")
       .margin({
-        top: "6%",
+        top: "4%",
       })
       .padding({
         left: "1%", right: "1%"

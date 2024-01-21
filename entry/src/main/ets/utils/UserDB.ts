@@ -111,11 +111,22 @@ export async function addUser(context: common.UIAbilityContext, user: User
 }
 
 export async function updateUser(
-    context: common.UIAbilityContext, id: number, user: User
+    context: common.UIAbilityContext, user: User
 ): Promise<boolean> {
   // TODO:完成对用户信息的更新
   let db = await relationalStore.getRdbStore(context, SQL_CONFIG);
-  return true;
+  //使用user中的id定位需要修改的User，并进行修改
+  const modifiedUser = {
+    "ACCOUNT": user.ACCOUNT,
+    "PASSWORD": user.PASSWORD,
+    "AUTHORITY": user.AUTHORITY,
+    "NAME": user.NAME,
+    "EMAIL": user.EMAIL
+  }
+  let pred = new relationalStore.RdbPredicates(TABLE_NAME);
+  pred.equalTo("ID", user.ID);
+  let result = await db.update(modifiedUser, pred);
+  return result == 1;
 }
 
 export async function deleteUser(context: common.UIAbilityContext, user: User
