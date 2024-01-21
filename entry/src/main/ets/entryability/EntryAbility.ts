@@ -18,6 +18,7 @@ export default class EntryAbility extends UIAbility {
     result.then((isSuccess)=>{
       if(isSuccess){
         console.log("UserDB start successfully!");
+        // addUser(this.context,new User(-1,"1","1",0,"WHC","123@123"))
       }else{
         console.log("UserDB start failed!");
       }

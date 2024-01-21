@@ -1,19 +1,34 @@
+import { getUserID } from "../utils/UserDB"
+import common from '@ohos.app.ability.common';
+
 export class loginCheckResult {
-  isValid: boolean;
+  //如果验证成功，userid将会返回数据库中对应条目的ID，message为空
+  //否则，userid返回-1，且message附带验证失败的信息
+  userid: number;
   message: string;
 
-  constructor(va: boolean=true, mess: string="") {
-    this.isValid = va;
+  constructor(id: number, mess: string) {
+    this.userid = id;
     this.message = mess;
   }
 }
 
-export function loginCheck(acc: string, pass: string):loginCheckResult {
-  if(acc===""){
-    return new loginCheckResult(false,"账号不能为空");
+export async function loginCheck(
+    context: common.UIAbilityContext, acc: string, pass: string
+): Promise<loginCheckResult> {
+  //TODO:完成登录验证
+  if (acc === "") {
+    return new loginCheckResult(-1, "账号不能为空！");
   }
-  if(pass===""){
-    return new loginCheckResult(false,"密码不能为空");
+  if (pass === "") {
+    return new loginCheckResult(-1, "密码不能为空！");
   }
-  return new loginCheckResult();
+  let result = await getUserID(context, acc, pass);
+  if (result == -1) {
+    //无匹配
+    return new loginCheckResult(-1, "没有匹配的账号！");
+  } else {
+    //唯一匹配成功
+    return new loginCheckResult(result, "")
+  }
 }

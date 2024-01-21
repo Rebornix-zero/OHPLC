@@ -2,13 +2,21 @@ import ItemDataExample from '../common/data/Data'
 import { SettingItem } from '../common/type/ItemTypes'
 import router from '@ohos.router'
 import promptAction from '@ohos.promptAction';
+import {getUserByID, User} from "../utils/UserDB"
+import common from '@ohos.app.ability.common';
 
 @Component
 export default struct SettingTab {
-  @State account: string = router.getParams()["account"];
-  @State password: string = router.getParams()["password"];
-  @State email: string = router.getParams()["email"];
-  @State name: string = router.getParams()["name"];
+  @State user:User=new User();
+  private  uiAbilityContext: common.UIAbilityContext =getContext() as common.UIAbilityContext;
+
+  aboutToAppear(){
+    getUserByID(this.uiAbilityContext,router.getParams()["userid"]).then(
+      (response)=>{
+        this.user=response;
+      }
+    )
+  }
 
   exitLogin(): void {
     promptAction.showDialog({
@@ -32,12 +40,11 @@ export default struct SettingTab {
     Row() {
       Row() {
         Image(item.img)
-          .width("22pv")
+          .width("24pv")
         Text(item.title)
-          .fontSize("16pv")
+          .fontSize("18pv")
           .padding({ left: "4pv" })
       }
-
       if (item.need_toggle) {
         Toggle({ type: ToggleType.Switch, isOn: false })
       } else {
@@ -63,10 +70,10 @@ export default struct SettingTab {
         Image($r("app.media.user"))
           .width("15%")
         Column() {
-          Text(this.name)
-            .fontSize("20pv")
+          Text(this.user.NAME)
+            .fontSize("22pv")
             .fontWeight("bold")
-          Text(this.email)
+          Text(this.user.EMAIL)
             .fontColor("#BEBEBE")
         }
         .padding({ left: "5%" })
