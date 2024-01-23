@@ -2,6 +2,7 @@ import UIAbility from '@ohos.app.ability.UIAbility';
 import hilog from '@ohos.hilog';
 import window from '@ohos.window';
 import {createUserTable,addUser,User} from '../utils/UserDB'
+import Want from '@ohos.app.ability.Want';
 
 export default class EntryAbility extends UIAbility {
   onCreate(want, launchParam) {
@@ -13,11 +14,12 @@ export default class EntryAbility extends UIAbility {
   }
 
   onWindowStageCreate(windowStage: window.WindowStage) {
-    //创建或启动数据库
+    //创建或启动存储User所用的数据库
     let result= createUserTable(this.context);
     result.then((isSuccess)=>{
       if(isSuccess){
         console.log("UserDB start successfully!");
+        // addUser(this.context,new User(-1,"1","1",0,"WHC","123@123"))
       }else{
         console.log("UserDB start failed!");
       }
@@ -46,5 +48,9 @@ export default class EntryAbility extends UIAbility {
   onBackground() {
     // Ability has back to background
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');
+  }
+
+  onNewWant(want:Want){
+
   }
 };

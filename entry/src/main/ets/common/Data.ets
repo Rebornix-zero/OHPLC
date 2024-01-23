@@ -1,4 +1,4 @@
-import {DeviceItem, SettingItem, TerminalItem} from '../type/ItemTypes'
+import {DeviceItem, SettingItem, TerminalItem} from './ItemTypes'
 
 export class ItemData {
   getSettingItemData(): Array<SettingItem> {
@@ -7,7 +7,7 @@ export class ItemData {
       new SettingItem($r("app.media.things"), "修改邮箱", false),
       new SettingItem($r("app.media.things"), "修改账号", false),
       new SettingItem($r("app.media.things"), "修改密码", false),
-      new SettingItem($r("app.media.things"),"夜间模式",true),
+      // new SettingItem($r("app.media.things"),"夜间模式",true),
     ]
     return data;
   }

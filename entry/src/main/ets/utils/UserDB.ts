@@ -18,33 +18,55 @@ export class User {
   AUTHORITY: number;
   NAME: string;
   EMAIL: string;
-  constructor(id:number,acc:string,pass:string,auth:number,name:string,email:string) {
-    this.ID=id;
-    this.ACCOUNT=acc;
-    this.PASSWORD=pass;
-    this.AUTHORITY=auth;
-    this.NAME=name;
-    this.EMAIL=email;
+
+  constructor(id: number = -1, acc: string = "", pass: string = "", auth: number = 0, name: string = "", email: string = "") {
+    this.ID = id;
+    this.ACCOUNT = acc;
+    this.PASSWORD = pass;
+    this.AUTHORITY = auth;
+    this.NAME = name;
+    this.EMAIL = email;
   }
+}
+
+export async function getUserByID(context: common.UIAbilityContext, userId: number): Promise<User> {
+  let db = await relationalStore.getRdbStore(context, SQL_CONFIG);
+  let pred = new relationalStore.RdbPredicates(TABLE_NAME);
+  pred.equalTo("ID", userId);
+  let resultSet = await db.query(pred, []);
+  if (resultSet.rowCount != 1) {
+    //如果rowCount为0，则代表没有匹配的userid
+    return new User(-1, "", "", 0, "", "");
+  }
+  //由于数据库主键自增特性，不可能出现两个及以上数量的行同时匹配一个ID
+  resultSet.goToFirstRow();
+  return new User(
+    resultSet.getLong(resultSet.getColumnIndex("ID")),
+    resultSet.getString(resultSet.getColumnIndex("ACCOUNT")),
+    resultSet.getString(resultSet.getColumnIndex("PASSWORD")),
+    resultSet.getLong(resultSet.getColumnIndex("AUTHORITY")),
+    resultSet.getString(resultSet.getColumnIndex("NAME")),
+    resultSet.getString(resultSet.getColumnIndex("EMAIL")),
+  );
 }
 
 export async function getAllUser(context: common.UIAbilityContext
 ): Promise<Array<User>> {
   let resultArray = new Array<User>();
   let db = await relationalStore.getRdbStore(context, SQL_CONFIG);
-  let resultSet=await db.querySql(`SELECT * FROM ${TABLE_NAME}`);
-  let rowsize=resultSet.rowCount;
-  if(rowsize!=0){
-   resultSet.goToFirstRow();
-    for(let i=0;i<rowsize;++i){
-     resultArray.push(new User(
-       resultSet.getLong(resultSet.getColumnIndex("ID")),
-       resultSet.getString(resultSet.getColumnIndex("ACCOUNT")),
-       resultSet.getString(resultSet.getColumnIndex("PASSWORD")),
-       resultSet.getLong(resultSet.getColumnIndex("AUTHORITY")),
-       resultSet.getString(resultSet.getColumnIndex("NAME")),
-       resultSet.getString(resultSet.getColumnIndex("EMAIL")),
-     ));
+  let resultSet = await db.querySql(`SELECT * FROM ${TABLE_NAME}`);
+  let rowsize = resultSet.rowCount;
+  if (rowsize != 0) {
+    resultSet.goToFirstRow();
+    for (let i = 0;i < rowsize; ++i) {
+      resultArray.push(new User(
+        resultSet.getLong(resultSet.getColumnIndex("ID")),
+        resultSet.getString(resultSet.getColumnIndex("ACCOUNT")),
+        resultSet.getString(resultSet.getColumnIndex("PASSWORD")),
+        resultSet.getLong(resultSet.getColumnIndex("AUTHORITY")),
+        resultSet.getString(resultSet.getColumnIndex("NAME")),
+        resultSet.getString(resultSet.getColumnIndex("EMAIL")),
+      ));
       resultSet.goToNextRow();
     }
   }
@@ -52,8 +74,24 @@ export async function getAllUser(context: common.UIAbilityContext
   return resultArray;
 }
 
-function userFormatCheck(user:User):boolean{
+function userFormatCheck(user: User): boolean {
+  //TODO: 完成对输入用户信息的格式检查
   return true;
+}
+
+export async function getUserID(context: common.UIAbilityContext, acc: string, pass: string): Promise<number> {
+  let db = await relationalStore.getRdbStore(context, SQL_CONFIG);
+  let pred = new relationalStore.RdbPredicates(TABLE_NAME);
+  pred.equalTo("ACCOUNT", acc).and().equalTo("PASSWORD", pass);
+  let resultSet = await db.query(pred, []);
+  if (resultSet.rowCount != 1) {
+    //如果rowCount为0，则代表没有匹配的账号-密码对
+    //如果rowCount大于1，则代表有多对匹配（理论上不应该出现）
+    return -1;
+  }
+  resultSet.goToFirstRow();
+  let id = resultSet.getLong(resultSet.getColumnIndex("ID"));
+  return id;
 }
 
 export async function addUser(context: common.UIAbilityContext, user: User
@@ -73,19 +111,30 @@ export async function addUser(context: common.UIAbilityContext, user: User
 }
 
 export async function updateUser(
-    context: common.UIAbilityContext, id: number, user: User
+    context: common.UIAbilityContext, user: User
 ): Promise<boolean> {
   // TODO:完成对用户信息的更新
   let db = await relationalStore.getRdbStore(context, SQL_CONFIG);
-  return true;
+  //使用user中的id定位需要修改的User，并进行修改
+  const modifiedUser = {
+    "ACCOUNT": user.ACCOUNT,
+    "PASSWORD": user.PASSWORD,
+    "AUTHORITY": user.AUTHORITY,
+    "NAME": user.NAME,
+    "EMAIL": user.EMAIL
+  }
+  let pred = new relationalStore.RdbPredicates(TABLE_NAME);
+  pred.equalTo("ID", user.ID);
+  let result = await db.update(modifiedUser, pred);
+  return result == 1;
 }
 
 export async function deleteUser(context: common.UIAbilityContext, user: User
 ): Promise<boolean> {
-  // FIXME: 未进行错误处理
+  // NOTE: 未进行错误处理
   let db = await relationalStore.getRdbStore(context, SQL_CONFIG);
-  let pred=new relationalStore.RdbPredicates(TABLE_NAME);
-  pred.equalTo("ACCOUNT",user.ACCOUNT).and().equalTo("PASSWORD",user.PASSWORD)
+  let pred = new relationalStore.RdbPredicates(TABLE_NAME);
+  pred.equalTo("ACCOUNT", user.ACCOUNT).and().equalTo("PASSWORD", user.PASSWORD)
   await db.delete(pred);
   return true;
 }

@@ -6,13 +6,12 @@ import { loginCheck, loginCheckResult } from '../utils/Login'
 @Entry
 @Component
 struct LoginPage {
-  @State account: string = "12345678";
-  @State password: string = "12345678";
+  @State account: string = "";
+  @State password: string = "";
+  private  uiAbilityContext: common.UIAbilityContext =getContext() as common.UIAbilityContext;
 
   exit() {
-    let ctx = getContext();
-    let a: common.UIAbilityContext = ctx as common.UIAbilityContext;
-    a.terminateSelf();
+    this.uiAbilityContext.terminateSelf();
   }
 
   onBackPress() {
@@ -34,9 +33,9 @@ struct LoginPage {
     return true;
   }
 
-  login(): void {
-    let re:loginCheckResult=loginCheck(this.account,this.password);
-    if(!re.isValid){
+  async login(): Promise<void> {
+    let re:loginCheckResult=await loginCheck(this.uiAbilityContext,this.account,this.password);
+    if(re.userid==-1){
       promptAction.showToast({
         message: re.message
       });
@@ -57,10 +56,7 @@ struct LoginPage {
         if (data.index == 0) {
           router.replaceUrl({ url: "pages/MainPage",
             params: {
-              account: this.account,
-              password: this.password,
-              name: "New User",
-              email: "12345@12345.com",
+              userid :re.userid
             }
           });
         }

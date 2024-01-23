@@ -1,56 +1,24 @@
-import ItemDataExample from '../common/data/Data'
-import { DeviceItem } from '../common/type/ItemTypes'
-
-@CustomDialog
-struct CustomDialogExample {
-  textValue: string = "222"
-  cancel: () => void
-  confirm: () => void
-  controller: CustomDialogController
-
-  build() {
-    Column() {
-      Text(this.textValue)
-        .fontSize(20)
-        .margin({ top: 10, bottom: 10 })
-      Flex({ justifyContent: FlexAlign.SpaceAround }) {
-        Button('cancel')
-          .onClick(() => {
-            this.controller.close()
-            this.cancel()
-          })
-          .backgroundColor(0xffffff)
-          .fontColor(Color.Black)
-        Button('confirm')
-          .onClick(() => {
-            this.controller.close()
-            this.confirm()
-          })
-          .backgroundColor(0xffffff)
-          .fontColor(Color.Red)
-      }
-      .margin({ bottom: 10 })
-    }
-    // dialog默认的borderRadius为24vp，如果需要使用border属性，请和borderRadius属性一起使用。
-  }
-}
+import ItemDataExample from '../common/Data'
+import { DeviceItem } from '../common/ItemTypes'
+import distributedDataObject from '@ohos.data.distributedDataObject';
+import common from '@ohos.app.ability.common';
+import { reqPermissionsFromUser } from "../utils/Permission"
+import promptAction from '@ohos.promptAction';
 
 @Component
 export default struct MultiControlTab {
-  dialogController: CustomDialogController = new CustomDialogController({
-    builder: CustomDialogExample({
-      cancel: this.onCancel,
-      confirm: this.onAccept,
-      textValue: "333333",
-    }), autoCancel: true
+  private uiAbilityContext = getContext() as common.UIAbilityContext;
+  private localObject = distributedDataObject.create(this.uiAbilityContext, {
+    value: "default"
   })
 
-  onCancel() {
-
+  handleDis() {
+    promptAction.showToast({ message: "HI" })
+    this.localObject.setSessionId("123456");
   }
 
-  onAccept() {
-
+  aboutToAppear() {
+    reqPermissionsFromUser(this);
   }
 
   @Builder DeviceCell(item: DeviceItem) {
@@ -78,9 +46,17 @@ export default struct MultiControlTab {
   build() {
     Column() {
       Text("多端协同")
-        .margin({ top: "8%" })
+        .margin({ top: "6%" })
         .fontWeight("bolder")
         .fontSize("24pv")
+
+      Button("分布式")
+        .onClick(() => this.handleDis())
+      TextInput({ text: this.localObject['value'] })
+        .onChange((value) => {
+          this.localObject['value'] = value;
+        })
+
       List() {
         ForEach(ItemDataExample.getDeviceItemData(), (item: DeviceItem) => {
           ListItem() {
@@ -96,7 +72,7 @@ export default struct MultiControlTab {
       .width("100%")
       .height("88%")
       .margin({
-        top: "6%",
+        top: "4%",
       })
       .padding({
         left: "1%", right: "1%"
