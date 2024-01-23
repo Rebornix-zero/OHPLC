@@ -1,24 +1,14 @@
 import ItemDataExample from '../common/Data'
 import { DeviceItem } from '../common/ItemTypes'
-import distributedDataObject from '@ohos.data.distributedDataObject';
 import common from '@ohos.app.ability.common';
-import { reqPermissionsFromUser } from "../utils/Permission"
 import promptAction from '@ohos.promptAction';
 
 @Component
 export default struct MultiControlTab {
   private uiAbilityContext = getContext() as common.UIAbilityContext;
-  private localObject = distributedDataObject.create(this.uiAbilityContext, {
-    value: "default"
-  })
-
-  handleDis() {
-    promptAction.showToast({ message: "HI" })
-    this.localObject.setSessionId("123456");
-  }
 
   aboutToAppear() {
-    reqPermissionsFromUser(this);
+
   }
 
   @Builder DeviceCell(item: DeviceItem) {
@@ -50,12 +40,6 @@ export default struct MultiControlTab {
         .fontWeight("bolder")
         .fontSize("24pv")
 
-      Button("分布式")
-        .onClick(() => this.handleDis())
-      TextInput({ text: this.localObject['value'] })
-        .onChange((value) => {
-          this.localObject['value'] = value;
-        })
 
       List() {
         ForEach(ItemDataExample.getDeviceItemData(), (item: DeviceItem) => {
