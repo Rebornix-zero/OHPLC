@@ -4,6 +4,7 @@ import SettingTab from '../views/SettingTab';
 import promptAction from '@ohos.promptAction';
 import common from '@ohos.app.ability.common';
 
+
 @Entry
 @Component
 struct MainPage {

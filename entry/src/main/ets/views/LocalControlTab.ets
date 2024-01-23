@@ -1,5 +1,5 @@
-import ItemDataExample from '../common/data/Data'
-import { TerminalItem } from '../common/type/ItemTypes'
+import ItemDataExample from '../common/Data'
+import { TerminalItem } from '../common/ItemTypes'
 
 @Component
 export default struct LocalControlTab{

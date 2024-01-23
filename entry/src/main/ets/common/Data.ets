@@ -1,4 +1,4 @@
-import {DeviceItem, SettingItem, TerminalItem} from '../type/ItemTypes'
+import {DeviceItem, SettingItem, TerminalItem} from './ItemTypes'
 
 export class ItemData {
   getSettingItemData(): Array<SettingItem> {

@@ -3,15 +3,14 @@
     "signingConfigs": [
       {
         "name": "default",
-        "type": "HarmonyOS",
         "material": {
-          "certpath": "C:\\Users\\19802\\.ohos\\config\\auto_debug_OHPLC_com.example.ohplc_2850086000521706319.cer",
-          "storePassword": "0000001B3174192F2EAE5108E47D70977C208348BD047BDD1C166018FB906368CAACAB466AB643A5050677",
+          "certpath": "C:\\Users\\19802\\.ohos\\config\\openharmony\\auto_ohos_default_OHPLC_com.example.ohplc.cer",
+          "storePassword": "0000001A1DAC143C02EA192D17AA523885CEBB5220C5B684CB408553188023EE140AF6BF768DF026251F",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001BBFBF1666559B6B5B4D42B7443CC8385E12EC2123C2FDA2494262DB236F4F76D43F62E9E5736CC3",
-          "profile": "C:\\Users\\19802\\.ohos\\config\\auto_debug_OHPLC_com.example.ohplc_2850086000521706319.p7b",
+          "keyPassword": "0000001A84C336D13317B9EA6A6470A52527182CA415B1217290A86C68C967001CF52111B8F33EE30D57",
+          "profile": "C:\\Users\\19802\\.ohos\\config\\openharmony\\auto_ohos_default_OHPLC_com.example.ohplc.p7b",
           "signAlg": "SHA256withECDSA",
-          "storeFile": "C:\\Users\\19802\\.ohos\\config\\auto_debug_OHPLC_com.example.ohplc_2850086000521706319.p12"
+          "storeFile": "C:\\Users\\19802\\.ohos\\config\\openharmony\\auto_ohos_default_OHPLC_com.example.ohplc.p12"
         }
       }
     ],

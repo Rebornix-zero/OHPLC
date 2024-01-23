@@ -1,5 +1,5 @@
-import ItemDataExample from '../common/data/Data'
-import { SettingItem } from '../common/type/ItemTypes'
+import ItemDataExample from '../common/Data'
+import { SettingItem } from '../common/ItemTypes'
 import router from '@ohos.router'
 import promptAction from '@ohos.promptAction';
 import { getUserByID, updateUser, User } from "../utils/UserDB"
