@@ -4,7 +4,9 @@ import {
   TerminalInfo,
   TerminalItem
 } from './ItemTypes'
-import deviceManager from '@ohos.distributedHardware.deviceManager';
+
+export const BUNDLE="com.example.ohplc"
+export const ABILITY="EntryAbility"
 
 export const SettingItemList: SettingItem[] = [
   new SettingItem($r("app.media.things"), "修改用户名", false),

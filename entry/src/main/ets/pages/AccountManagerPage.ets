@@ -1,6 +1,7 @@
 import promptAction from '@ohos.promptAction';
 import common from '@ohos.app.ability.common';
 import { addUser, getAllUser, User, deleteUser } from '../utils/UserDB'
+import router from '@ohos.router';
 
 @Component
 struct InputCell {
@@ -194,17 +195,19 @@ struct AccountManagerPage {
   build() {
     Column() {
       Row() {
-        Text()
+        Image($r("app.media.left"))
+          .width("48pv")
+          .onClick(() => router.back())
         Text("账号管理")
           .fontWeight("bolder")
-          .fontSize("24pv")
+          .fontSize("26pv")
         Image($r("app.media.plus"))
-          .width("30pv")
+          .width("32pv")
           .onClick(() => this.addUserDialogController.open())
       }
       .margin({ top: "8%" })
-      .width("92%")
-      .padding({ left: "4%", right: "4%" })
+      .width("96%")
+      .padding({ left: "2%", right: "2%" })
       .justifyContent(FlexAlign.SpaceBetween)
 
       Column() {

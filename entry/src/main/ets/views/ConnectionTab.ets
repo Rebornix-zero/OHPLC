@@ -1,5 +1,10 @@
 import { DeviceItemList } from '../common/ConstData'
-import { DeviceItem } from '../common/ItemTypes'
+import {
+  DeviceItem,
+  getDeviceImage,
+  getConnectStatus,
+  getConnectColor
+} from '../common/ItemTypes'
 import common from '@ohos.app.ability.common';
 import router from '@ohos.router';
 
@@ -10,18 +15,21 @@ export default struct ConnectionTab {
   @Builder DeviceCell(item: DeviceItem) {
     Row() {
       Row() {
-        Image(item.getDeviceImage())
+        Image(getDeviceImage(item.connection_status))
           .width("30pv")
         Text(item.device_info.deviceName)
           .fontSize("20pv")
           .padding({ left: "6pv" })
-          .fontColor(item.getDeviceNameColor())
+          .fontColor(getConnectColor(item.connection_status))
       }
 
-      Text(item.getDeviceConnectStatus())
-        .fontColor(item.getDeviceNameColor())
+      Text(getConnectStatus(item.connection_status))
+        .fontColor(getConnectColor(item.connection_status))
     }
-    .onClick(()=>router.pushUrl({url:"pages/DevicePage"}))
+    .onClick(() => router.pushUrl({
+      url: "pages/DevicePage",
+      params: item
+    }))
     .justifyContent(FlexAlign.SpaceBetween)
     .width("100%")
     .padding({
@@ -32,7 +40,7 @@ export default struct ConnectionTab {
 
   build() {
     Column() {
-      Text("连接状态")
+      Text("设备连接")
         .margin({ top: "6%" })
         .fontWeight("bolder")
         .fontSize("24pv")

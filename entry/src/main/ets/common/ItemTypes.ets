@@ -1,5 +1,11 @@
 import deviceManager from '@ohos.distributedHardware.deviceManager';
 
+export enum ConnectionState {
+  FAILED = -1,
+  NO_CONNECT = 0,
+  CONNECT = 1,
+}
+
 export class SettingItem {
   img: Resource;
   title: string | Resource;
@@ -15,57 +21,12 @@ export class SettingItem {
 
 export class DeviceItem {
   public device_info: deviceManager.DeviceInfo;
-  public connext_status: number; //0未连接，1连接，-1错误
+  public connection_status: ConnectionState; //0未连接，1连接，-1错误
 
   constructor(
-    info: deviceManager.DeviceInfo, status: number = 0) {
+    info: deviceManager.DeviceInfo, status: ConnectionState = 0) {
     this.device_info = info;
-    this.connext_status = status;
-  }
-
-  getDeviceImage(): Resource {
-    switch (this.connext_status) {
-      case 1: {
-        return $r("app.media.matebook_connect")
-      }
-      case -1: {
-        return $r("app.media.matebook_error")
-      }
-      case 0:
-      default: {
-        return $r("app.media.matebook_noconnect")
-      }
-    }
-  }
-
-  getDeviceNameColor(): string {
-    switch (this.connext_status) {
-      case 1: {
-        return "#0091FF";
-      }
-      case -1: {
-        return "#E02020";
-      }
-      case 0:
-      default: {
-        return "#000000";
-      }
-    }
-  }
-
-  getDeviceConnectStatus(): string {
-    switch (this.connext_status) {
-      case 1: {
-        return "已连接";
-      }
-      case -1: {
-        return "连接错误";
-      }
-      case 0:
-      default: {
-        return "未连接";
-      }
-    }
+    this.connection_status = status;
   }
 }
 
@@ -85,57 +46,109 @@ export class TerminalInfo {
 
 export class TerminalItem {
   public terminal_info: TerminalInfo;
-  public connection_status: number; //0未连接，1连接，-1错误
+  public connection_status: ConnectionState; //0未连接，1连接，-1错误
 
   constructor(
     info: TerminalInfo,
-    status: number = 0) {
+    status: ConnectionState = 0) {
     this.terminal_info = info;
     this.connection_status = status;
   }
+}
 
-  getTerminalImage(): Resource {
-    switch (this.connection_status) {
-      case 1: {
-        return $r("app.media.wireless_connect")
-      }
-      case -1: {
-        return $r("app.media.wireless_error")
-      }
-      case 0:
-      default: {
-        return $r("app.media.wireless_noconnection")
-      }
+export function getDeviceImage(connext_status: ConnectionState): Resource {
+  switch (connext_status) {
+    case ConnectionState.CONNECT: {
+      return $r("app.media.matebook_connect")
+    }
+    case ConnectionState.FAILED: {
+      return $r("app.media.matebook_error")
+    }
+    case ConnectionState.NO_CONNECT:
+    default: {
+      return $r("app.media.matebook_noconnect")
     }
   }
+}
 
-  getTerminalNameColor(): string {
-    switch (this.connection_status) {
-      case 1: {
-        return "#0091FF";
-      }
-      case -1: {
-        return "#E02020";
-      }
-      case 0:
-      default: {
-        return "#000000";
-      }
+export function getTerminalImage(connection_status: ConnectionState): Resource {
+  switch (connection_status) {
+    case ConnectionState.CONNECT: {
+      return $r("app.media.wireless_connect")
+    }
+    case ConnectionState.FAILED: {
+      return $r("app.media.wireless_error")
+    }
+    case ConnectionState.NO_CONNECT:
+    default: {
+      return $r("app.media.wireless_noconnection")
     }
   }
+}
 
-  getTerminalConnectStatus(): string {
-    switch (this.connection_status) {
-      case 1: {
-        return "已连接";
-      }
-      case -1: {
-        return "连接错误";
-      }
-      case 0:
-      default: {
-        return "未连接";
-      }
+export function getConnectStatus(connection_status: ConnectionState): string {
+  switch (connection_status) {
+    case ConnectionState.CONNECT: {
+      return "已连接";
     }
+    case ConnectionState.FAILED: {
+      return "连接失败";
+    }
+    case ConnectionState.NO_CONNECT:
+    default: {
+      return "未连接";
+    }
+  }
+}
+
+export function getConnectColor(connection_status: number | string): string {
+  switch (connection_status) {
+    case 1:
+    case "已连接": {
+      return "#0091FF";
+    }
+    case -1:
+    case "连接失败": {
+      return "#E02020";
+    }
+    case 0:
+    default: {
+      return "#000000";
+    }
+  }
+}
+
+export function deviceTypeToName(type: deviceManager.DeviceType): string {
+  switch (type) {
+    case deviceManager.DeviceType.SPEAKER:
+      return "智能音箱";
+    case deviceManager.DeviceType.PHONE:
+      return "手机";
+    case deviceManager.DeviceType.TABLET:
+      return "平板";
+    case deviceManager.DeviceType.WEARABLE:
+      return "智能穿戴";
+    case deviceManager.DeviceType.TV:
+      return "智慧屏";
+    case deviceManager.DeviceType.CAR:
+      return "车";
+    case deviceManager.DeviceType.UNKNOWN_TYPE:
+    default:
+      return "开发板或未知设备";
+  }
+}
+
+export function sortMethod(
+    a: DeviceItem | TerminalItem, b: DeviceItem | TerminalItem): number {
+  if (a.connection_status == b.connection_status) {
+    //a b优先级一致,返回0
+    return 0;
+  }
+  if (a.connection_status > b.connection_status) {
+    //a优先级高于b,返回负数
+    return -1;
+  } else {
+    //b优先级高于a,返回负数
+    return 1;
   }
 }

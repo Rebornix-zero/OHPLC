@@ -1,5 +1,5 @@
 import { TerminalItemList } from '../common/ConstData'
-import { TerminalItem } from '../common/ItemTypes'
+import { TerminalItem,getTerminalImage,getConnectColor,getConnectStatus } from '../common/ItemTypes'
 import router from '@ohos.router';
 
 @Component
@@ -7,18 +7,18 @@ export default struct TerminalControlTab {
   @Builder TerminalCell(item: TerminalItem) {
     Row() {
       Row() {
-        Image(item.getTerminalImage())
+        Image(getTerminalImage(item.connection_status))
           .width("30pv")
         Text(item.terminal_info.terminal_name)
           .fontSize("20pv")
           .padding({ left: "6pv" })
-          .fontColor(item.getTerminalNameColor())
+          .fontColor(getConnectColor(item.connection_status))
       }
 
-      Text(item.getTerminalConnectStatus())
-        .fontColor(item.getTerminalNameColor())
+      Text(getConnectStatus(item.connection_status))
+        .fontColor(getConnectColor(item.connection_status))
     }
-    .onClick(()=>router.pushUrl({url:"pages/TerminalPage"}))
+    .onClick(()=>router.pushUrl({url:"pages/TerminalPage",params:item}))
     .justifyContent(FlexAlign.SpaceBetween)
     .width("100%")
     .padding({
@@ -29,7 +29,7 @@ export default struct TerminalControlTab {
 
   build() {
     Column() {
-      Text("设备控制")
+      Text("终端控制")
         .margin({ top: "6%" })
         .fontWeight("bolder")
         .fontSize("24pv")

@@ -61,13 +61,13 @@ struct MainPage {
       TabContent() {
         TerminalControlTab()
       }
-      .tabBar(this.TabBuilder("设备控制", 0, $r("app.media.app_active"),
+      .tabBar(this.TabBuilder("终端控制", 0, $r("app.media.app_active"),
         $r("app.media.app_inactive")))
 
       TabContent() {
         ConnectionTab()
       }
-      .tabBar(this.TabBuilder("连接状态", 1, $r("app.media.cloud_active"),
+      .tabBar(this.TabBuilder("设备连接", 1, $r("app.media.cloud_active"),
         $r("app.media.cloud_inactive")))
 
       TabContent() {
@@ -82,6 +82,6 @@ struct MainPage {
     .onChange((index: number) => {
       this.currentIndex = index;
     })
-    .backgroundColor("#4687ceff")
+    .backgroundColor("#1887ceff")
   }
 }

@@ -9,13 +9,12 @@ export default class EntryAbility extends UIAbility {
   onCreate(want, launchParam) {
     // 为终端信息和设备信息创建应用级状态变量
 
-
     // 创建或启动存储User所用的数据库
     let result = createUserTable(this.context);
     result.then((isSuccess) => {
       if (isSuccess) {
         console.log("UserDB start successfully!");
-        // addUser(this.context,new User(-1,"1","1",0,"WHC","123@123"))
+        addUser(this.context, new User(-1, "1", "1", 0, "WHC", "123@123"))
       } else {
         console.log("UserDB start failed!");
       }

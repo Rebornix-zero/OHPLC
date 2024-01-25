@@ -42,7 +42,7 @@ async function handlePoorPermission(context: common.UIAbilityContext) {
   try {
     await promptAction.showDialog({
       title: "\"多设备协同\" 权限尚未开启",
-      message: "\t您尚未开启\"多设备协同\"权限，这会影响到应用正常运行\n\t请在设置>隐私>权限管理中找到对应权限并授权",
+      message: "\t\t您尚未开启\"多设备协同\"权限，这会影响到应用正常运行\n\t\t请在设置>隐私>权限管理中找到对应权限并授权",
       buttons: [{
         text: '确认',
         color: 'red',
