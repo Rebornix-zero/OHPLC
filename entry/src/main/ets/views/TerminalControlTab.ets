@@ -2,7 +2,7 @@ import ItemDataExample from '../common/Data'
 import { TerminalItem } from '../common/ItemTypes'
 
 @Component
-export default struct LocalControlTab{
+export default struct TerminalControlTab{
 
   @Builder TerminalCell(item: TerminalItem) {
     Row() {
@@ -28,7 +28,7 @@ export default struct LocalControlTab{
 
   build() {
     Column() {
-      Text("本地控制")
+      Text("设备控制")
         .margin({ top: "6%" })
         .fontWeight("bolder")
         .fontSize("24pv")

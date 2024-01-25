@@ -4,7 +4,7 @@ import common from '@ohos.app.ability.common';
 import promptAction from '@ohos.promptAction';
 
 @Component
-export default struct MultiControlTab {
+export default struct ConnectionTab {
   private uiAbilityContext = getContext() as common.UIAbilityContext;
 
   aboutToAppear() {
@@ -35,11 +35,10 @@ export default struct MultiControlTab {
 
   build() {
     Column() {
-      Text("多端协同")
+      Text("连接状态")
         .margin({ top: "6%" })
         .fontWeight("bolder")
         .fontSize("24pv")
-
 
       List() {
         ForEach(ItemDataExample.getDeviceItemData(), (item: DeviceItem) => {

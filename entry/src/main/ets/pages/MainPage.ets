@@ -1,9 +1,8 @@
-import LocalControlTab from '../views/LocalControlTab';
-import MultiControlTab from '../views/MultiControlTab';
+import TerminalControlTab from '../views/TerminalControlTab';
+import ConnectionTab from '../views/ConnectionTab';
 import SettingTab from '../views/SettingTab';
 import promptAction from '@ohos.promptAction';
 import common from '@ohos.app.ability.common';
-
 
 @Entry
 @Component
@@ -60,21 +59,21 @@ struct MainPage {
       controller: this.tabsController
     }) {
       TabContent() {
-        LocalControlTab()
+        TerminalControlTab()
       }
-      .tabBar(this.TabBuilder("本地控制", 0, $r("app.media.app_active"),
+      .tabBar(this.TabBuilder("设备控制", 0, $r("app.media.app_active"),
         $r("app.media.app_inactive")))
 
       TabContent() {
-        MultiControlTab()
+        ConnectionTab()
       }
-      .tabBar(this.TabBuilder("多端协同", 1, $r("app.media.cloud_active"),
+      .tabBar(this.TabBuilder("连接状态", 1, $r("app.media.cloud_active"),
         $r("app.media.cloud_inactive")))
 
       TabContent() {
         SettingTab()
       }
-      .tabBar(this.TabBuilder("设置", 2, $r("app.media.settings_active"),
+      .tabBar(this.TabBuilder("设置中心", 2, $r("app.media.settings_active"),
         $r("app.media.settings_inactive")))
 
     }
