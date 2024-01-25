@@ -7,7 +7,10 @@ import { checkAppPermission } from "../utils/Permission"
 
 export default class EntryAbility extends UIAbility {
   onCreate(want, launchParam) {
-    //创建或启动存储User所用的数据库
+    // 为终端信息和设备信息创建应用级状态变量
+
+
+    // 创建或启动存储User所用的数据库
     let result = createUserTable(this.context);
     result.then((isSuccess) => {
       if (isSuccess) {

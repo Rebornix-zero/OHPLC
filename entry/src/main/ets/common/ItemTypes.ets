@@ -1,3 +1,5 @@
+import deviceManager from '@ohos.distributedHardware.deviceManager';
+
 export class SettingItem {
   img: Resource;
   title: string | Resource;
@@ -12,21 +14,17 @@ export class SettingItem {
 }
 
 export class DeviceItem {
-  device_name: string;
-  device_id: string;
-  device_ip: string;
-  status: number; //0无连接，1连接，-1错误
+  public device_info: deviceManager.DeviceInfo;
+  public connext_status: number; //0未连接，1连接，-1错误
 
   constructor(
-    device_name: string, device_id: string, device_ip: string, status: number) {
-    this.device_name = device_name;
-    this.device_id = device_id;
-    this.device_ip = device_ip;
-    this.status = status;
+    info: deviceManager.DeviceInfo, status: number = 0) {
+    this.device_info = info;
+    this.connext_status = status;
   }
 
   getDeviceImage(): Resource {
-    switch (this.status) {
+    switch (this.connext_status) {
       case 1: {
         return $r("app.media.matebook_connect")
       }
@@ -41,7 +39,7 @@ export class DeviceItem {
   }
 
   getDeviceNameColor(): string {
-    switch (this.status) {
+    switch (this.connext_status) {
       case 1: {
         return "#0091FF";
       }
@@ -56,7 +54,7 @@ export class DeviceItem {
   }
 
   getDeviceConnectStatus(): string {
-    switch (this.status) {
+    switch (this.connext_status) {
       case 1: {
         return "已连接";
       }
@@ -71,23 +69,33 @@ export class DeviceItem {
   }
 }
 
+export class TerminalInfo {
+  public terminal_name: string;
+  public terminal_ip: string;
+  public device_name: string;
+  public device_id: string;
+
+  constructor(Tname: string, Tip: string, Dname: string, Did: string) {
+    this.terminal_name = Tname;
+    this.terminal_ip = Tip;
+    this.device_name = Dname;
+    this.device_id = Did;
+  }
+}
+
 export class TerminalItem {
-  terminal_name: string;
-  terminal_id: string;
-  terminal_ip: string;
-  status: number; //0无连接，1连接，-1错误
+  public terminal_info: TerminalInfo;
+  public connection_status: number; //0未连接，1连接，-1错误
 
   constructor(
-    terminal_name: string, terminal_id: string, terminal_ip: string,
-    status: number) {
-    this.terminal_name = terminal_name;
-    this.terminal_id = terminal_id;
-    this.terminal_ip = terminal_ip;
-    this.status = status;
+    info: TerminalInfo,
+    status: number = 0) {
+    this.terminal_info = info;
+    this.connection_status = status;
   }
 
   getTerminalImage(): Resource {
-    switch (this.status) {
+    switch (this.connection_status) {
       case 1: {
         return $r("app.media.wireless_connect")
       }
@@ -102,7 +110,7 @@ export class TerminalItem {
   }
 
   getTerminalNameColor(): string {
-    switch (this.status) {
+    switch (this.connection_status) {
       case 1: {
         return "#0091FF";
       }
@@ -117,7 +125,7 @@ export class TerminalItem {
   }
 
   getTerminalConnectStatus(): string {
-    switch (this.status) {
+    switch (this.connection_status) {
       case 1: {
         return "已连接";
       }

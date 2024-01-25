@@ -1,22 +1,18 @@
-import ItemDataExample from '../common/Data'
+import { DeviceItemList } from '../common/ConstData'
 import { DeviceItem } from '../common/ItemTypes'
 import common from '@ohos.app.ability.common';
-import promptAction from '@ohos.promptAction';
+import router from '@ohos.router';
 
 @Component
 export default struct ConnectionTab {
   private uiAbilityContext = getContext() as common.UIAbilityContext;
-
-  aboutToAppear() {
-
-  }
 
   @Builder DeviceCell(item: DeviceItem) {
     Row() {
       Row() {
         Image(item.getDeviceImage())
           .width("30pv")
-        Text(item.device_name)
+        Text(item.device_info.deviceName)
           .fontSize("20pv")
           .padding({ left: "6pv" })
           .fontColor(item.getDeviceNameColor())
@@ -25,6 +21,7 @@ export default struct ConnectionTab {
       Text(item.getDeviceConnectStatus())
         .fontColor(item.getDeviceNameColor())
     }
+    .onClick(()=>router.pushUrl({url:"pages/DevicePage"}))
     .justifyContent(FlexAlign.SpaceBetween)
     .width("100%")
     .padding({
@@ -41,7 +38,7 @@ export default struct ConnectionTab {
         .fontSize("24pv")
 
       List() {
-        ForEach(ItemDataExample.getDeviceItemData(), (item: DeviceItem) => {
+        ForEach(DeviceItemList, (item: DeviceItem) => {
           ListItem() {
             this.DeviceCell(item)
           }

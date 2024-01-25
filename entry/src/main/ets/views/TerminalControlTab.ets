@@ -1,15 +1,15 @@
-import ItemDataExample from '../common/Data'
+import { TerminalItemList } from '../common/ConstData'
 import { TerminalItem } from '../common/ItemTypes'
+import router from '@ohos.router';
 
 @Component
-export default struct TerminalControlTab{
-
+export default struct TerminalControlTab {
   @Builder TerminalCell(item: TerminalItem) {
     Row() {
       Row() {
         Image(item.getTerminalImage())
           .width("30pv")
-        Text(item.terminal_name)
+        Text(item.terminal_info.terminal_name)
           .fontSize("20pv")
           .padding({ left: "6pv" })
           .fontColor(item.getTerminalNameColor())
@@ -18,6 +18,7 @@ export default struct TerminalControlTab{
       Text(item.getTerminalConnectStatus())
         .fontColor(item.getTerminalNameColor())
     }
+    .onClick(()=>router.pushUrl({url:"pages/TerminalPage"}))
     .justifyContent(FlexAlign.SpaceBetween)
     .width("100%")
     .padding({
@@ -33,7 +34,7 @@ export default struct TerminalControlTab{
         .fontWeight("bolder")
         .fontSize("24pv")
       List() {
-        ForEach(ItemDataExample.getTerminalItemData(), (item: TerminalItem) => {
+        ForEach(TerminalItemList, (item: TerminalItem) => {
           ListItem() {
             this.TerminalCell(item)
           }

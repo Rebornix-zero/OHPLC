@@ -2,6 +2,8 @@
   "src": [
     "pages/LoginPage",
     "pages/MainPage",
-    "pages/AccountManagerPage"
+    "pages/AccountManagerPage",
+    "pages/TerminalPage",
+    "pages/DevicePage"
   ]
 }
