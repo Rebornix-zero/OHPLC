@@ -1,9 +1,27 @@
-import { TerminalItemList } from '../common/ConstData'
-import { TerminalItem,getTerminalImage,getConnectColor,getConnectStatus } from '../common/ItemTypes'
+import {
+  TerminalItem,
+  getTerminalImage,
+  getConnectColor,
+  getConnectStatus,
+  sortMethod,
+} from '../common/ItemTypes'
 import router from '@ohos.router';
+import { DeviceManagerInstance } from "../utils/DeviceManager"
+import {
+  DistributeTerminalDataManagerInstance
+} from '../utils/DistributedDataManager';
 
 @Component
 export default struct TerminalControlTab {
+  @StorageLink("TerminalList") terminalList: TerminalItem[] = [];
+  @StorageLink("TerminalNum") terminalNum: number = 0;
+
+  aboutToAppear() {
+    let newList = this.terminalList.concat([]);
+    newList.sort(sortMethod);
+    this.terminalList = newList;
+  }
+
   @Builder TerminalCell(item: TerminalItem) {
     Row() {
       Row() {
@@ -18,7 +36,7 @@ export default struct TerminalControlTab {
       Text(getConnectStatus(item.connection_status))
         .fontColor(getConnectColor(item.connection_status))
     }
-    .onClick(()=>router.pushUrl({url:"pages/TerminalPage",params:item}))
+    .onClick(() => router.pushUrl({ url: "pages/TerminalPage", params: item }))
     .justifyContent(FlexAlign.SpaceBetween)
     .width("100%")
     .padding({
@@ -29,12 +47,24 @@ export default struct TerminalControlTab {
 
   build() {
     Column() {
-      Text("终端控制")
-        .margin({ top: "6%" })
-        .fontWeight("bolder")
-        .fontSize("24pv")
+      Row() {
+        Text()
+        Text("终端控制")
+          .fontWeight("bolder")
+          .fontSize("24pv")
+        Image($r("app.media.plus"))
+          .width("36pv")
+          .onClick(() => {
+            DistributeTerminalDataManagerInstance.addItem();
+          })
+      }
+      .justifyContent(FlexAlign.SpaceBetween)
+      .width("84%")
+      .margin({ left: "8%", top: "6%" })
+
+
       List() {
-        ForEach(TerminalItemList, (item: TerminalItem) => {
+        ForEach(this.terminalList, (item: TerminalItem) => {
           ListItem() {
             this.TerminalCell(item)
           }

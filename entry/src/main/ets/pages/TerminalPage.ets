@@ -48,7 +48,7 @@ struct TerminalPage {
     .justifyContent(FlexAlign.SpaceBetween)
     .border({
       style: { bottom: BorderStyle.Solid },
-      color: Color.Grey,
+      color: "#ffdcdcdc",
       width: { bottom: 0.5 }
     })
   }

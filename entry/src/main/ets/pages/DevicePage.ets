@@ -7,30 +7,58 @@ import {
   deviceTypeToName
 } from "../common/ItemTypes"
 import router from '@ohos.router';
+import { DeviceItemList } from '../common/ConstData';
+import deviceManager from '@ohos.distributedHardware.deviceManager';
+import { DeviceManagerInstance } from "../utils/DeviceManager"
+import promptAction from '@ohos.promptAction';
+import common from '@ohos.app.ability.common';
 
 @Entry
 @Component
 struct DevicePage {
-  @State device: DeviceItem = (router.getParams() as DeviceItem);
+  private deviceId: string = router.getParams()["deviceId"];
+  private deviceName: string = router.getParams()["deviceName"];
+  private deviceType: deviceManager.DeviceType = router.getParams()["deviceType"];
+  private networkId: string = router.getParams()["networkId"];
+  private range: string = router.getParams()["range"];
+  @State private state: ConnectionState = router.getParams()["state"];
 
   handleConnect() {
-    console.log("Connect")
+    DeviceManagerInstance.Connect(this.deviceId)
+      .then(
+        (re) => {
+          if (re) {
+            promptAction.showToast({ message: "连接成功！" })
+            this.state = ConnectionState.CONNECT
+          } else {
+            promptAction.showToast({ message: "连接失败，请重试！" })
+          }
+        }
+      )
   }
 
   handleDisconnect() {
-    console.log("Disconnect")
+    DeviceManagerInstance.DisConnect()
+      .then(
+        (re) => {
+          if (re) {
+            promptAction.showToast({ message: "连接已断开！" })
+            this.state = ConnectionState.NO_CONNECT
+          }
+        }
+      )
   }
 
   @Builder ConnectionButton() {
-    Button(this.device.connection_status == ConnectionState.CONNECT ? "断开连接" : "连接")
-      .margin({ top: "100pv" })
+    Button(this.state == ConnectionState.CONNECT ? "断开连接" : "连接")
+      .margin({ top: "50pv", bottom: "50pv" })
       .fontSize("18pv")
       .fontWeight("bold")
       .width("40%")
-      .fontColor(this.device.connection_status == ConnectionState.CONNECT ? "#E02020" : "#0091FF")
+      .fontColor(this.state == ConnectionState.CONNECT ? "#E02020" : "#0091FF")
       .backgroundColor("white")
       .onClick(() => {
-        if (this.device.connection_status == ConnectionState.CONNECT)
+        if (this.state == ConnectionState.CONNECT)
           this.handleDisconnect(); else this.handleConnect();
       })
   }
@@ -40,6 +68,7 @@ struct DevicePage {
       Text(key)
         .fontSize("20pv")
       Text(value)
+        .width("50%")
         .fontSize("20pv")
         .fontColor(getConnectColor(value))
     }
@@ -49,51 +78,53 @@ struct DevicePage {
     .justifyContent(FlexAlign.SpaceBetween)
     .border({
       style: { bottom: BorderStyle.Solid },
-      color: Color.Grey,
+      color: "#ffdcdcdc",
       width: { bottom: 0.5 }
     })
   }
 
   build() {
-    Column() {
-      Row() {
-        Image($r("app.media.left"))
-          .width("40pv")
-          .onClick(() => router.back())
-      }
-      .width("100%")
-      .justifyContent(FlexAlign.Start)
-      .padding({ left: "4%", right: "4%" })
-
-      Image(getDeviceImage(this.device.connection_status))
-        .width("20%")
-      Text(this.device.device_info.deviceName)
-        .fontWeight("bold")
-        .fontSize("32pv")
+    Scroll() {
       Column() {
-        this.InfoCell("设备名称", this.device.device_info.deviceName)
-        this.InfoCell("设备ID", this.device.device_info.deviceId)
-        this.InfoCell("设备类型",
-          deviceTypeToName(this.device.device_info.deviceType))
-        this.InfoCell("网络ID", this.device.device_info.networkId)
-        this.InfoCell("设备距离", this.device.device_info.range.toString())
-        this.InfoCell("连接状态",
-          getConnectStatus(this.device.connection_status))
-      }
-      .backgroundColor("white")
-      .width("92%")
-      .margin({ left: "4%", right: "4%", top: "20pv" })
-      .padding({bottom:"20pv"})
-      .borderRadius("20pv")
+        Row() {
+          Image($r("app.media.left"))
+            .width("40pv")
+            .onClick(() => router.back())
+        }
+        .width("100%")
+        .justifyContent(FlexAlign.Start)
+        .padding({ left: "4%", right: "4%" })
 
-      this.ConnectionButton()
+        Image(getDeviceImage(this.state))
+          .width("20%")
+        Text(this.deviceName)
+          .fontWeight("bold")
+          .fontSize("32pv")
+        Column() {
+          this.InfoCell("设备名称", this.deviceName)
+          this.InfoCell("设备ID", this.deviceId)
+          this.InfoCell("设备类型",
+            deviceTypeToName(this.deviceType))
+          this.InfoCell("网络ID", this.networkId)
+          this.InfoCell("设备距离", this.range)
+          this.InfoCell("连接状态",
+            getConnectStatus(this.state))
+        }
+        .backgroundColor("white")
+        .width("92%")
+        .margin({ left: "4%", right: "4%", top: "20pv" })
+        .padding({ bottom: "20pv" })
+        .borderRadius("20pv")
+
+        this.ConnectionButton()
+      }
+      .alignItems(HorizontalAlign.Center)
+      .width("100%")
+      .backgroundColor("#1887ceff")
+      .padding({
+        top: "4%"
+      })
     }
-    .alignItems(HorizontalAlign.Center)
-    .width("100%")
-    .height("100%")
-    .backgroundColor("#1887ceff")
-    .padding({
-      top: "4%"
-    })
+    .scrollable(ScrollDirection.Vertical)
   }
 }

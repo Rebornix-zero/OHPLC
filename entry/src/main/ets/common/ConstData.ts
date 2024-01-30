@@ -1,12 +1,8 @@
-import {
-  DeviceItem,
-  SettingItem,
-  TerminalInfo,
-  TerminalItem
-} from './ItemTypes'
+import { DeviceItem, SettingItem, TerminalInfo, TerminalItem } from './ItemTypes'
 
-export const BUNDLE="com.example.ohplc"
-export const ABILITY="EntryAbility"
+export const BUNDLE = "com.example.ohplc"
+
+export const ABILITY = "EntryAbility"
 
 export const SettingItemList: SettingItem[] = [
   new SettingItem($r("app.media.things"), "修改用户名", false),
@@ -42,5 +38,8 @@ export const TerminalItemList: TerminalItem[] = [
   new TerminalItem(new TerminalInfo("ss", "ss", "ss", "ss"), 1),
   new TerminalItem(new TerminalInfo("ss", "ss", "ss", "ss"), 0),
   new TerminalItem(new TerminalInfo("ss", "ss", "ss", "ss"), -1),
+  new TerminalItem(new TerminalInfo("ss", "ss", "ss", "ss"), -1),
+  new TerminalItem(new TerminalInfo("ss", "ss", "ss", "ss"), 0),
+  new TerminalItem(new TerminalInfo("ss", "ss", "ss", "ss"), 1),
 ]
 

@@ -138,8 +138,8 @@ export function deviceTypeToName(type: deviceManager.DeviceType): string {
   }
 }
 
-export function sortMethod(
-    a: DeviceItem | TerminalItem, b: DeviceItem | TerminalItem): number {
+export const sortMethod: (
+  a: DeviceItem | TerminalItem, b: DeviceItem | TerminalItem) => number = (a, b) => {
   if (a.connection_status == b.connection_status) {
     //a b优先级一致,返回0
     return 0;
