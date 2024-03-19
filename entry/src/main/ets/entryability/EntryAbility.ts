@@ -1,21 +1,19 @@
 import UIAbility from '@ohos.app.ability.UIAbility';
 import hilog from '@ohos.hilog';
 import window from '@ohos.window';
-import { createUserTable, addUser, User } from '../utils/UserDB'
-import Want from '@ohos.app.ability.Want';
+import { createUserTable } from '../utils/UserDB'
 import { checkAppPermission } from "../utils/Permission"
-import { TerminalItem, DeviceItem, sortMethod } from "../common/ItemTypes"
-import { TerminalItemList, DeviceItemList } from "../common/ConstData"
+import { TerminalItem, DeviceItem } from "../common/ItemTypes"
 import { DistributeTerminalDataManagerInstance } from "../utils/DistributedDataManager"
-import {DeviceManagerInstance} from "../utils/DeviceManager"
+import { DeviceManagerInstance } from "../utils/DeviceManager"
 
 export default class EntryAbility extends UIAbility {
   onCreate(want, launchParam) {
-    //
-    DeviceManagerInstance.context=this.context;
-    // // 为终端信息和设备信息创建应用级状态变量
+    // 为设备管理器赋值context
+    DeviceManagerInstance.context = this.context;
+    // 为终端信息和设备信息创建应用级状态变量
     // 发现的终端列表（分布式共享数据组1）
-    AppStorage.SetOrCreate<TerminalItem[]>("TerminalList",[]);
+    AppStorage.SetOrCreate<TerminalItem[]>("TerminalList", []);
     // 终端数据分布式sessionID（Want传递数据）
     AppStorage.SetOrCreate<string>("TerminalSessionID", "");
     // 现在与该设备共连的设备Id数组（分布式共享数据组2）
@@ -25,7 +23,6 @@ export default class EntryAbility extends UIAbility {
 
     // 发现的设备列表（本地更新数据）
     AppStorage.SetOrCreate<DeviceItem[]>("DeviceList", []);
-
     // 创建或启动存储User所用的数据库
     let result = createUserTable(this.context);
     result.then((isSuccess) => {
@@ -41,6 +38,7 @@ export default class EntryAbility extends UIAbility {
 
   onDestroy() {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');
+    DeviceManagerInstance.deviceManager.release();
   }
 
   onWindowStageCreate(windowStage: window.WindowStage) {

@@ -12,34 +12,4 @@ export const SettingItemList: SettingItem[] = [
 // new SettingItem($r("app.media.things"),"夜间模式",true),
 ];
 
-export const DeviceItemList: DeviceItem[] = [
-  new DeviceItem({
-    deviceId: "ss",
-    deviceName: "ss",
-    deviceType: 0,
-    networkId: "ss",
-    range: 1
-  }, 1), new DeviceItem({
-  deviceId: "ss",
-  deviceName: "ss",
-  deviceType: 0,
-  networkId: "ss",
-  range: 1
-}, 0), new DeviceItem({
-  deviceId: "ss",
-  deviceName: "ss",
-  deviceType: 0,
-  networkId: "ss",
-  range: 1
-}, -1),
-]
-
-export const TerminalItemList: TerminalItem[] = [
-  new TerminalItem(new TerminalInfo("ss", "ss", "ss", "ss"), 1),
-  new TerminalItem(new TerminalInfo("ss", "ss", "ss", "ss"), 0),
-  new TerminalItem(new TerminalInfo("ss", "ss", "ss", "ss"), -1),
-  new TerminalItem(new TerminalInfo("ss", "ss", "ss", "ss"), -1),
-  new TerminalItem(new TerminalInfo("ss", "ss", "ss", "ss"), 0),
-  new TerminalItem(new TerminalInfo("ss", "ss", "ss", "ss"), 1),
-]
 

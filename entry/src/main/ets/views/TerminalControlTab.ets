@@ -10,6 +10,7 @@ import { DeviceManagerInstance } from "../utils/DeviceManager"
 import {
   DistributeTerminalDataManagerInstance
 } from '../utils/DistributedDataManager';
+import promptAction from '@ohos.promptAction';
 
 @Component
 export default struct TerminalControlTab {
@@ -27,7 +28,7 @@ export default struct TerminalControlTab {
       Row() {
         Image(getTerminalImage(item.connection_status))
           .width("30pv")
-        Text(item.terminal_info.terminal_name)
+        Text(item.terminal_info.softplc_name)
           .fontSize("20pv")
           .padding({ left: "6pv" })
           .fontColor(getConnectColor(item.connection_status))
@@ -52,10 +53,11 @@ export default struct TerminalControlTab {
         Text("终端控制")
           .fontWeight("bolder")
           .fontSize("24pv")
-        Image($r("app.media.plus"))
+        Image($r("app.media.refresh"))
           .width("36pv")
           .onClick(() => {
-            DistributeTerminalDataManagerInstance.addItem();
+            DistributeTerminalDataManagerInstance.refreshItem();
+            promptAction.showToast({ message: "刷新成功！" });
           })
       }
       .justifyContent(FlexAlign.SpaceBetween)

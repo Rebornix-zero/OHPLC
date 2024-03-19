@@ -29,12 +29,7 @@ class DeviceManager {
     }
   }
 
-  // 析构函数 释放deviceManager实例
-  finalize() {
-    this.deviceManager.release();
-  }
-
-  // 同步的更新可信设备列表
+  // 同步的更新可信设备列表，但异步返回结果
   async reFetchTrustDeviceList(): Promise<boolean> {
     try {
       let newTrustDeviceInfoList = this.deviceManager.getTrustedDeviceListSync();
@@ -65,8 +60,8 @@ class DeviceManager {
   // 与某个设备进行连接
   async Connect(deviceId: string): Promise<boolean> {
     let sessionID = "";
-    //清空本地数据
-    DistributeTerminalDataManagerInstance.clearData();
+    // //清空本地数据
+    // DistributeTerminalDataManagerInstance.clearData();
     //获取sessionID
     sessionID = DistributeTerminalDataManagerInstance.getSessionID();
     //创建新的want

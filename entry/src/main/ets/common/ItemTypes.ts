@@ -30,17 +30,32 @@ export class DeviceItem {
   }
 }
 
-export class TerminalInfo {
-  public terminal_name: string;
-  public terminal_ip: string;
-  public device_name: string;
-  public device_id: string;
+export class Variable{
+  public variable_name:string;
+  public variable_type:string;
+  public variable_value:string;
 
-  constructor(Tname: string, Tip: string, Dname: string, Did: string) {
-    this.terminal_name = Tname;
-    this.terminal_ip = Tip;
-    this.device_name = Dname;
-    this.device_id = Did;
+  constructor(va_name:string,va_type:string,va_value:string) {
+    this.variable_name=va_name;
+    this.variable_type=va_type;
+    this.variable_value=va_value;
+  }
+}
+
+
+export class TerminalInfo {
+  public softplc_name: string;
+  public socket_port : number;
+  public protocol:string;
+  public protocol_info:string;
+  public softplc_info:string;
+
+  constructor(soft_name: string, sock_port: number, proto: string, proto_info: string,soft_info:string) {
+    this.softplc_name=soft_name;
+    this.socket_port=sock_port;
+    this.protocol=proto;
+    this.protocol_info=proto_info;
+    this.softplc_info=soft_info;
   }
 }
 

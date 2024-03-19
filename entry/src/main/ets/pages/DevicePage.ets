@@ -7,11 +7,9 @@ import {
   deviceTypeToName
 } from "../common/ItemTypes"
 import router from '@ohos.router';
-import { DeviceItemList } from '../common/ConstData';
 import deviceManager from '@ohos.distributedHardware.deviceManager';
 import { DeviceManagerInstance } from "../utils/DeviceManager"
 import promptAction from '@ohos.promptAction';
-import common from '@ohos.app.ability.common';
 
 @Entry
 @Component
@@ -108,7 +106,7 @@ struct DevicePage {
           this.InfoCell("网络ID", this.networkId)
           this.InfoCell("设备距离", this.range)
           this.InfoCell("连接状态",
-            getConnectStatus(this.state))
+              this.state == ConnectionState.CONNECT ? "已连接" : (this.state == ConnectionState.NO_CONNECT ? "未连接" : "连接失败"))
         }
         .backgroundColor("white")
         .width("92%")

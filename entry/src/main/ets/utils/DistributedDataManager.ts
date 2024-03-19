@@ -1,5 +1,5 @@
 import distributedObject from '@ohos.data.distributedDataObject'
-import { TerminalInfo, TerminalItem } from "../common/ItemTypes"
+import { ConnectionState, TerminalInfo, TerminalItem } from "../common/ItemTypes"
 
 type terminal_array = TerminalItem[];
 
@@ -20,8 +20,6 @@ class DistributeTerminalDataManager {
     this.distributedTerminalDataObject.on('change', this.changeCallback);
   }
 
-  finalize() {
-  }
 
   genSessionID(): string {
     return distributedObject.genSessionId();
@@ -48,11 +46,21 @@ class DistributeTerminalDataManager {
     this.terminalListLink.set([]);
   }
 
-  addItem() {
+  refreshItem() {
     this.distributedTerminalDataObject.terminalItemList = [...this.distributedTerminalDataObject.terminalItemList,
-      new TerminalItem(new TerminalInfo("", "", "", ""), 0)
+      new TerminalItem(new TerminalInfo("SoftPLC NAME", 8080, "ModeBus Client TCP", "127.0.0.1:502", "SoftPLC INFO. "), 0)
     ]
     this.terminalListLink.set(this.distributedTerminalDataObject.terminalItemList);
+  }
+
+  setItemConnectState(name: string, connect: ConnectionState) {
+    this.distributedTerminalDataObject.terminalItemList.forEach(item => {
+      if (item.terminal_info.softplc_name == name) {
+        item.connection_status = connect;
+      }
+    });
+    this.terminalListLink.set(this.distributedTerminalDataObject.terminalItemList);
+    return;
   }
 }
 

@@ -57,6 +57,7 @@ struct LoginPage {
           router.replaceUrl({ url: "pages/MainPage",
             params: {
               userid :re.userid
+              // userid:0
             }
           });
         }
