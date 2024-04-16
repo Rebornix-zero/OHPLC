@@ -1,4 +1,4 @@
-import ItemDataExample from '../common/Data'
+import { SettingItemList } from '../common/ConstData'
 import { SettingItem } from '../common/ItemTypes'
 import router from '@ohos.router'
 import promptAction from '@ohos.promptAction';
@@ -115,12 +115,11 @@ struct ModifyDialog {
   }
 }
 
-
 @Component
 export default struct SettingTab {
   @State user: User = new User();
-  private uiAbilityContext: common.UIAbilityContext = getContext() as common.UIAbilityContext;
   @State mode: number = 0; //0正常，1修改用户名，2修改邮箱，3修改账号，4修改密码
+  private uiAbilityContext: common.UIAbilityContext = getContext() as common.UIAbilityContext;
   private modifyDialogController: CustomDialogController = new CustomDialogController({
     builder: ModifyDialog({ oldUser: $user, mode: $mode }),
     alignment: DialogAlignment.Bottom,
@@ -211,7 +210,7 @@ export default struct SettingTab {
       .margin({ top: "4%" })
 
       List() {
-        ForEach(ItemDataExample.getSettingItemData(),
+        ForEach(SettingItemList,
           (item: SettingItem, index) => {
             ListItem() {
               this.settingCell(item, index)
