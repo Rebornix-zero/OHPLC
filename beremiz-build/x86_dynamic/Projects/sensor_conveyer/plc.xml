@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='utf-8'?>
+<project xmlns:ns1="http://www.plcopen.org/xml/tc6_0201" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.plcopen.org/xml/tc6_0201">
+  <fileHeader companyName="Beremiz" productName="Beremiz" productVersion="1" creationDateTime="2018-07-27T13:19:12"/>
+  <contentHeader name="Modbus" modificationDateTime="2024-03-05T04:07:35">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="0" y="0"/>
+      </fbd>
+      <ld>
+        <scaling x="0" y="0"/>
+      </ld>
+      <sfc>
+        <scaling x="0" y="0"/>
+      </sfc>
+    </coordinateInfo>
+  </contentHeader>
+  <types>
+    <dataTypes/>
+    <pous>
+      <pou name="program0" pouType="program">
+        <interface>
+          <localVars>
+            <variable name="isensor" address="%IX100.0.0.0">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="oconvey" address="%QX100.0.1.0">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="isenor1" address="%IX100.0.2.1">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+            <variable name="oconvey1" address="%QX100.0.3.1">
+              <type>
+                <BOOL/>
+              </type>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <FBD>
+            <inVariable localId="3" executionOrderId="0" height="24" width="106" negated="false">
+              <position x="128" y="94"/>
+              <connectionPointOut>
+                <relPosition x="106" y="12"/>
+              </connectionPointOut>
+              <expression>isensor</expression>
+            </inVariable>
+            <outVariable localId="6" executionOrderId="0" height="24" width="114" negated="false">
+              <position x="373" y="94"/>
+              <connectionPointIn>
+                <relPosition x="0" y="12"/>
+                <connection refLocalId="3">
+                  <position x="373" y="106"/>
+                  <position x="234" y="106"/>
+                </connection>
+              </connectionPointIn>
+              <expression>oconvey</expression>
+            </outVariable>
+            <inVariable localId="7" executionOrderId="0" height="24" width="66" negated="false">
+              <position x="138" y="138"/>
+              <connectionPointOut>
+                <relPosition x="66" y="12"/>
+              </connectionPointOut>
+              <expression>isenor1</expression>
+            </inVariable>
+            <outVariable localId="8" executionOrderId="0" height="24" width="74" negated="false">
+              <position x="350" y="143"/>
+              <connectionPointIn>
+                <relPosition x="0" y="12"/>
+                <connection refLocalId="7">
+                  <position x="350" y="155"/>
+                  <position x="277" y="155"/>
+                  <position x="277" y="150"/>
+                  <position x="204" y="150"/>
+                </connection>
+              </connectionPointIn>
+              <expression>oconvey1</expression>
+            </outVariable>
+          </FBD>
+        </body>
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations>
+      <configuration name="config">
+        <resource name="resource1">
+          <task name="task0" priority="0" interval="T#20ms">
+            <pouInstance name="instance0" typeName="program0"/>
+          </task>
+        </resource>
+      </configuration>
+    </configurations>
+  </instances>
+</project>
